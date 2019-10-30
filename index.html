@@ -3,21 +3,89 @@
    <head>
       <title>Try v1.2 Bootstrap Online</title>
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
       <link href="./assets/css/default-style.css" rel="stylesheet">  
+      <meta name="vieport" content="width=advice-width,inicial-scale=1">
+
+      <!-- The core Firebase JS SDK is always required and must be listed first -->
+      <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>
+
+      <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+      <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-analytics.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-database.js"></script>
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+      <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+         apiKey: "AIzaSyD7yxvG2ntbbaER8hnlz2Gipox3g_Er2zI",
+         authDomain: "smartcontent-3eca7.firebaseapp.com",
+         databaseURL: "https://smartcontent-3eca7.firebaseio.com",
+         projectId: "smartcontent-3eca7",
+         storageBucket: "smartcontent-3eca7.appspot.com",
+         messagingSenderId: "998425799654",
+         appId: "1:998425799654:web:bad53aa00d14fc07f08427",
+         measurementId: "G-78KSHG25WL"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+
+      function seuNomeAnuMesDia(){
+         var current_datetime = new Date()
+         var formatted_date = current_datetime.getFullYear() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getDate() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds() 
+         return formatted_date;
+      }
+
+      function validateEmail(email) {
+         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+         return re.test(String(email).toLowerCase());
+      }
+
+      function enviarDadosFireBase(nomeParam, emailParam){
+         
+         if((""+emailParam).length == 0 || !validateEmail(emailParam)){
+            alert("Email inválido");
+            return false;
+         }
+
+         if((""+nomeParam).length == 0){
+            alert("Nome obrigatório");
+            return false;
+         }
+
+         var milliseconds = new Date().getTime();
+         var database = firebase.database();
+
+         firebase.database().ref('leads/'+milliseconds).set({
+            name: nomeParam,
+            email: emailParam,
+            ip: ""+window.ip,
+            tipo: "B2C",
+            data_hora: ""+seuNomeAnuMesDia()
+         });
+
+         alert("Dados enviados com sucesso!");
+         limparForm();
+      }
+
+      function limparForm(){
+         $('#nomeId1').val('');
+         $('#emailId1').val('');
+         $('#nomeId2').val('');
+         $('#emailId2').val('');
+      }      
+
+      </script>
    </head>
    <body>
-      <div class="container">
+   <div class="container">
+         <div class="row"><br /><br /></div>
          <div class="row">
-            <br /><br />
-         </div>
-
-         <div class="row">
-            <div class="col col-lg-1">
-              
-            </div>
+            <div class="col col-lg-1"></div>
             <div class="col col-lg-3">
-                <img src="./assets/img/SmartContent.png" class="rounded float-left" alt="SmartContent" style="width: 113pt; height: 17.5pt">
+               <img src="./assets/img/SmartContent.png" class="rounded float-left" alt="SmartContent" style="width: 113pt; height: 17.5pt" />
             </div>
             <div class="col col-lg-2 menu-top">
                Categoria 1
@@ -29,8 +97,7 @@
                Categoria 3
             </div>
             <div class = "col col-lg-2 menu-top">
-               <img src="./assets/img/search.png" class="rounded float-center" alt="lupa" style="width: 11pt; height: 11pt">
-               
+               <img src="./assets/img/search.png" class="rounded float-center" alt="lupa" style="width: 11pt; height: 11pt" />
             </div>
             <div class = "col-md-1 menu-top">
             </div>
@@ -43,19 +110,239 @@
                <img src="./assets/img/png24 1@2x.png" class="rounded float-right" alt="Principal" style="width: 298pt; height: 225pt">
             </div>
             <div class="col col-lg-6 float-right align-middle" style="font-family: Roboto-Bold; font-size: 27pt; color: #5b42e5;">
+               <br /><br />
                <b>Lorem</b> ipsum <br />dolor sit    
             </div>
-
          </div>
-      </div>
-   </body>
-   <!-- Global site tag (gtag.js) - Google Analytics -->
+
+         <div class="row">
+               <br /><br />
+         </div>
+         
+         <div class="row form-row" style="background-color: #5b42e5; height: 90px; vertical-align: center;">
+               <div class="col col-lg-2">
+                     
+               </div>
+               <div class="col col-lg-3" style="font-family: Roboto-Bold; font-size: 27pt; color: white; font-size: 15px; font-weight: bold;">
+                     <br />   
+                     Receba as novidades <br /> no seu e-mail
+               </div>
+
+               <div class="col col-lg-2" style="font-family: Roboto-Bold; font-size: 27pt; color: white; font-size: 15px;">
+                     <br />   
+                     <div class="col-auto">
+                        <label class="sr-only" for="inlineFormInput">Name</label>
+                        <input type="text" class="form-control mb-2" id="nomeId1" placeholder="Seu nome">
+                     </div>
+               </div>
+
+               <div class="col col-lg-2" style="font-family: Roboto-Bold; font-size: 27pt; color: white; font-size: 15px;">
+                     <br />   
+                     <div class="col-auto">
+                        <label class="sr-only" for="inlineFormInputGroup">Seu e-mail</label>
+                        <div class="input-group mb-2">
+                           <input type="text" class="form-control" id="emailId1" placeholder="Seu e-mail">
+                        </div>
+                     </div>
+               </div>
+               <div class="col col-lg-2" style="font-family: Roboto-Bold; font-size: 27pt; color: white; font-size: 15px;">
+                     <br />   
+                     <div class="col-auto">
+                           <button type="button" class="btn btn-outline-warning" onclick="enviarDadosFireBase($('#nomeId1').val(), $('#emailId1').val() );">Enviar</button>
+                        </div>
+               </div>
+               <div class="col col-lg-3">
+               </div>
+         </div>
+         
+         <div class="row">
+            <div class="col col-lg-8">
+                  <br /><br />
+                  <div class="media">
+                     <div class="d-flex justify-content-start">
+                        <img class="mr-3" src="./assets/img/group 47.png" alt="Generic placeholder image">
+                        <div class="media-body">
+                           <h5 class="mt-0">Media heading</h5>
+                           Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                           <br />
+                           <button type="button" class="btn btn-link" style="font-family: Roboto-Bold; color: #5b42e5;">Ler mais >></button>
+                        </div>
+                     </div>
+                  </div>
+
+                  <br /><br />
+
+                  <div class="media">
+                     <div class="d-flex justify-content-start">
+                        <img class="mr-3" src="./assets/img/group 47.png" alt="Generic placeholder image">
+                        <div class="media-body">
+                           <h5 class="mt-0">Media heading</h5>
+                           Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                           <br />
+                           <button type="button" class="btn btn-link" style="font-family: Roboto-Bold; color: #5b42e5;">Ler mais >></button>
+                        </div>
+                     </div>
+                  </div>
+
+                  <br /><br />
+
+                  <div class="media">
+                     <div class="d-flex justify-content-start">
+                        <img class="mr-3" src="./assets/img/group 47.png" alt="Generic placeholder image">
+                        <div class="media-body">
+                           <h5 class="mt-0">Media heading</h5>
+                           Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                           <br />
+                           <button type="button" class="btn btn-link" style="font-family: Roboto-Bold; color: #5b42e5;">Ler mais >></button>
+                        </div>
+                     </div>
+                  </div>
+
+            </div>
+            <div class="col col-lg-4 float-right align-middle">
+               <br />
+
+               
+
+               <img src="./assets/img/callToActionFake.png" class="rounded float-left" alt="Call to Action" style="width: 300px; height: 600px;" />
+
+
+            </div>
+         </div>
+         <div class="row">
+               <br /><br />
+         </div>
+         <div class="row form-row" style="background-color: #5b42e5; height: 90px; vertical-align: center;">
+               <div class="col col-lg-2">
+                     
+               </div>
+               <div class="col col-lg-3" style="font-family: Roboto-Bold; font-size: 27pt; color: white; font-size: 15px; font-weight: bold;">
+                     <br />   
+                     Receba as novidades <br /> no seu e-mail
+               </div>
+
+               <div class="col col-lg-2" style="font-family: Roboto-Bold; font-size: 27pt; color: white; font-size: 15px;">
+                     <br />   
+                     <div class="col-auto">
+                        <label class="sr-only" for="inlineFormInput">Name</label>
+                        <input type="text" class="form-control mb-2" id="nomeId2" placeholder="Seu nome">
+                     </div>
+               </div>
+
+               <div class="col col-lg-2" style="font-family: Roboto-Bold; font-size: 27pt; color: white; font-size: 15px;">
+                     <br />   
+                     <div class="col-auto">
+                        <label class="sr-only" for="inlineFormInputGroup">Seu e-mail</label>
+                        <div class="input-group mb-2">
+                           <input type="text" class="form-control" id="emailId2" placeholder="Seu e-mail">
+                        </div>
+                     </div>
+               </div>
+               <div class="col col-lg-2" style="font-family: Roboto-Bold; font-size: 27pt; color: white; font-size: 15px;">
+                     <br />   
+                     <div class="col-auto">
+                           <button type="button" class="btn btn-outline-warning" onclick="enviarDadosFireBase($('#nomeId2').val(), $('#emailId2').val() );">Enviar</button>
+                        </div>
+               </div>
+               <div class="col col-lg-3">
+               </div>
+         </div>
+
+         <br /><br /><br />
+   </div>
+   <div> 
+      <ul class="icones-redes-sociais">
+          <img src="./assets/img/SmartContent.png" class="rounded float-left" alt="SmartContent" style="width: 120pt; height: 17.5pt"/>
+               <br>
+               <li>
+                <a href="https://facebook.com" class="facebook">
+                    facebook
+                </a>
+               </li>
+               <li>
+                <a href="instagram.com" class="instagram">
+                    intagram
+                </a>
+               </li>
+        </ul>
+    </aside>
+    <footer class="rodape-pagina">
+         <p>SmartContent 2019. Todos os direitos reservados &copy;</p> 
+    </footer></div>
+   <style>
+
+.instagram {
+    background-image: url(SmartContent/assets/img/intagram.png);
+    text-align: center;
+}
+
+.facebook {
+    background-image: url(../imagens/.png);
+    text-align: center;
+}
+
+      .rodape-pagina{
+         font-size: 14px;
+         color:#5b42e5;
+         text-align: center;
+      }
+      .container-fluid{
+         background-color: #5b42e5;
+         width:720pt; 
+         height:59.5pt; 
+         color: white;
+         display: flex;
+         flex-direction: row;
+      }
+      .button{
+         background-color: #5521881;
+         width: 70.5pt;
+         height:18pt;
+      }
+      .btn btn-primary mb-2{
+         background-color:#ffda51;  
+      }
+      #myFooter{
+         padding-top:32px;
+      }
+      .form-row align-items-center {
+         flex-direction: row-reverse;
+      }
+      .sr-only{
+         width: 122pt;
+         height: 18pt;
+      }
+      .retangulo-formulario h2{
+         text-align: center;
+         font-size: 9pt;
+         width: 86pt;
+         height: 20pt;
+      }
+      .nav justify-content-center {
+      color: black
+
+      }
+      .mr-3 {
+         display: flex;
+
+      }
+   </style>
+<!-- Global site tag (gtag.js) - Google Analytics -->
    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151094636-1"></script>
    <script>
-     window.dataLayer = window.dataLayer || [];
-     function gtag(){dataLayer.push(arguments);}
-     gtag('js', new Date());
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-     gtag('config', 'UA-151094636-1');
+      gtag('config', 'UA-151094636-1');
+
+      $(function() {
+        $.getJSON("https://api.ipify.org?format=jsonp&callback=?",
+          function(json) {
+            window.ip = json.ip;
+          }
+        );
+      });
    </script>
+   </body>
 </html>
